@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/api-customer/api-customer.iml" filepath="$PROJECT_DIR$/api-customer/api-customer.iml" />
       <module fileurl="file://$PROJECT_DIR$/api-wallet/api-wallet.iml" filepath="$PROJECT_DIR$/api-wallet/api-wallet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/microservice-virtual-wallet.iml" filepath="$PROJECT_DIR$/.idea/microservice-virtual-wallet.iml" />
     </modules>
   </component>

@@ -16,5 +16,7 @@
 
   - spring boot
   - spring-jpa (class-entity mapping)
+  - spring-cloud-netflix
+    - eureka
 
 - MySQL

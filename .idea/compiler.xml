@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="config-server" />
         <module name="eureka-server" />
         <module name="api-wallet" />
         <module name="api-customer" />
@@ -15,6 +16,7 @@
     <bytecodeTargetLevel>
       <module name="api-customer" target="17" />
       <module name="api-wallet" target="17" />
+      <module name="config-server" target="17" />
       <module name="eureka-server" target="17" />
     </bytecodeTargetLevel>
   </component>
@@ -22,6 +24,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-customer" options="-parameters" />
       <module name="api-wallet" options="-parameters" />
+      <module name="config-server" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
     </option>
   </component>

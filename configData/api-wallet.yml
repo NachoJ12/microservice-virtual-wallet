@@ -19,10 +19,10 @@ spring:
         format_sql: true
         jdbc:
           time_zone: UTC
-      jackson:
-        serialization:
-          write_dates_as_timestamps: false
-        date-format: yyyy-MM-dd
+    jackson:
+      serialization:
+        write_dates_as_timestamps: false
+      date-format: yyyy-MM-dd
 
 info:
   application:

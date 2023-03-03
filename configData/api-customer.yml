@@ -7,7 +7,7 @@ spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/db-wallet?createDatabaseIfNotExist=true
-    username:
+    username: nacho@localhost
     password:
   jpa:
     database-platform: org.hibernate.dialect.MySQL57Dialect

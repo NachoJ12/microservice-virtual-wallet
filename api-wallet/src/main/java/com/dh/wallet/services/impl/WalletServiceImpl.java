@@ -1,5 +1,6 @@
 package com.dh.wallet.services.impl;
 
+import com.dh.wallet.client.ICustomerClient;
 import com.dh.wallet.dto.WalletDTO;
 import com.dh.wallet.model.Wallet;
 import com.dh.wallet.repository.IWalletRepository;
@@ -16,9 +17,17 @@ public class WalletServiceImpl implements IWalletService {
     @Autowired
     private IWalletRepository walletRepository;
 
+    @Autowired
+    private ICustomerClient customerFeignClient;
+
+
     @Override
     public Wallet createWallet(Wallet wallet) {
-        walletRepository.save(wallet);
+        /* Missing try/catch and exception */
+
+        if(customerFeignClient.getCustomer(wallet.documentType, wallet.document).isPresent())
+            walletRepository.save(wallet);
+
         return wallet;
     }
 

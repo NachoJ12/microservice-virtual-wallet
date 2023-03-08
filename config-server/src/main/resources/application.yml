@@ -9,6 +9,6 @@ spring:
       server:
         git:
           uri: https://github.com/NachoJ12/microservice-virtual-wallet
-          default-label: configServer
+          default-label: feignLoadBalance
           force-pull: true
           search-paths: configData

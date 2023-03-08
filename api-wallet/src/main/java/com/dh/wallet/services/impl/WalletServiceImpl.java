@@ -2,6 +2,8 @@ package com.dh.wallet.services.impl;
 
 import com.dh.wallet.client.ICustomerClient;
 import com.dh.wallet.dto.WalletDTO;
+import com.dh.wallet.exception.MessageError;
+import com.dh.wallet.exception.WalletException;
 import com.dh.wallet.model.Wallet;
 import com.dh.wallet.repository.IWalletRepository;
 import com.dh.wallet.services.IWalletService;
@@ -9,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class WalletServiceImpl implements IWalletService {
@@ -22,26 +23,27 @@ public class WalletServiceImpl implements IWalletService {
 
 
     @Override
-    public Wallet createWallet(Wallet wallet) {
-        /* Missing try/catch and exception */
+    public void createWallet(Wallet wallet) throws WalletException {
+        customerFeignClient.getCustomer(wallet.getDocumentType(), wallet.getDocument()).orElseThrow(() -> new WalletException(MessageError.CUSTOMER_NOT_FOUND));
 
-        if(customerFeignClient.getCustomer(wallet.documentType, wallet.document).isPresent())
-            walletRepository.save(wallet);
+        /* this if is return false because ever return empty */
+        if(walletRepository.findByDocumentAndCode(wallet.getDocumentType(), wallet.getDocument(), wallet.getCurrency().getCode()).isPresent()){
+            throw new WalletException(MessageError.WALLET_EXISTS);
+        }
 
-        return wallet;
+        walletRepository.save(wallet);
     }
 
     @Override
-    public Wallet updateWallet(WalletDTO walletDTO) {
-        Optional<Wallet> wallet = walletRepository.findById(walletDTO.getId());
-        wallet.get().setBalance(walletDTO.getBalance());
-        walletRepository.save(wallet.get());
-        return wallet.get();
+    public void updateWallet(WalletDTO walletDTO) throws Exception {
+        Wallet wallet = walletRepository.findById(walletDTO.getId()).orElseThrow(() -> new WalletException(MessageError.WALLET_NOT_FOUND));
+        wallet.setBalance(walletDTO.getBalance());
+        walletRepository.save(wallet);
     }
 
     @Override
-    public Optional<Wallet> getWalletByCurrency(String documentType, String document, String code) {
-        return walletRepository.findByDocumentAndCode(documentType, document, code);
+    public Wallet getWalletByCurrency(String documentType, String document, String code) throws Exception{
+        return walletRepository.findByDocumentAndCode(documentType, document, code).orElseThrow(() -> new WalletException(MessageError.WALLET_NOT_FOUND));
     }
 
     @Override

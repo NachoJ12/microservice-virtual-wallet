@@ -9,6 +9,6 @@ spring:
       server:
         git:
           uri: https://github.com/NachoJ12/microservice-virtual-wallet
-          default-label: Gatewa
+          default-label: main
           force-pull: true
           search-paths: configData

@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/api-wallet/api-wallet.iml" filepath="$PROJECT_DIR$/api-wallet/api-wallet.iml" />
       <module fileurl="file://$PROJECT_DIR$/config-server/config-server.iml" filepath="$PROJECT_DIR$/config-server/config-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gateway/gateway.iml" filepath="$PROJECT_DIR$/gateway/gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/microservice-virtual-wallet.iml" filepath="$PROJECT_DIR$/.idea/microservice-virtual-wallet.iml" />
     </modules>
   </component>

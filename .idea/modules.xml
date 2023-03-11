@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/api-customer/api-customer.iml" filepath="$PROJECT_DIR$/api-customer/api-customer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api-margins/api-margins.iml" filepath="$PROJECT_DIR$/api-margins/api-margins.iml" />
       <module fileurl="file://$PROJECT_DIR$/api-wallet/api-wallet.iml" filepath="$PROJECT_DIR$/api-wallet/api-wallet.iml" />
       <module fileurl="file://$PROJECT_DIR$/config-server/config-server.iml" filepath="$PROJECT_DIR$/config-server/config-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />

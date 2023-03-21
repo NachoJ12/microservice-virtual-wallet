@@ -9,13 +9,15 @@
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
         <module name="api-margins" />
+        <module name="api-card" />
+        <module name="api-customer" />
         <module name="eureka-server" />
         <module name="api-wallet" />
         <module name="gateway" />
-        <module name="api-customer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="api-card" target="17" />
       <module name="api-customer" target="17" />
       <module name="api-margins" target="17" />
       <module name="api-wallet" target="17" />
@@ -26,6 +28,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api-card" options="-parameters" />
       <module name="api-customer" options="-parameters" />
       <module name="api-margins" options="-parameters" />
       <module name="api-wallet" options="-parameters" />

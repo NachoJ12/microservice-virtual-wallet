@@ -50,4 +50,11 @@ public class WalletServiceImpl implements IWalletService {
     public List<Wallet> getBalanceByDocument(String documentType, String document) {
         return walletRepository.findByDocument(documentType, document);
     }
+
+    @Override
+    public void updateBalance(Long id, Double balance) throws WalletException {
+        var wallet = walletRepository.findById(id);
+        wallet.get().setBalance(balance);
+        walletRepository.save(wallet.get());
+    }
 }

@@ -6,11 +6,9 @@ import com.dh.wallet.model.Wallet;
 import com.dh.wallet.services.impl.WalletServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/wallet")
@@ -43,5 +41,11 @@ public class WalletController {
     public ResponseEntity<?> updateWallet (@RequestBody WalletDTO walletDTO) throws Exception {
         walletService.updateWallet(walletDTO);
         return ResponseEntity.ok("Wallet update");
+    }
+
+    @PutMapping("/{id}/{balance}")
+    public ResponseEntity<?> updateBalance (@PathVariable Long id, @PathVariable Double balance) throws Exception {
+        walletService.updateBalance(id, balance);
+        return ResponseEntity.ok("Wallet balance update");
     }
 }

@@ -1,10 +1,13 @@
 package com.dh.apicard.controller;
 
+import com.dh.apicard.exceptions.CardException;
 import com.dh.apicard.model.CreditCard;
 import com.dh.apicard.model.CreditCardMovement;
 import com.dh.apicard.services.impl.CardServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -18,12 +21,12 @@ public class CreditCardController {
     }
 
     @PostMapping("/{documentType}/{documentNumber}/{currency}")
-    public void saveCard(@PathVariable String documentType, @PathVariable String documentNumber, @PathVariable String currency){
+    public void create(@PathVariable String documentType, @PathVariable String documentNumber, @PathVariable String currency) throws CardException{
         cardService.createCreditCard(documentType, documentNumber, currency);
     }
 
     @GetMapping("/{documentType}/{documentNumber}")
-    public CreditCard getByDocTypeAndDocNumber (@PathVariable String documentType, @PathVariable String documentNumber){
+    public CreditCard getByDocTypeAndDocNumber(@PathVariable String documentType, @PathVariable String documentNumber) throws CardException{
         return cardService.getByDocTypeAndDocNumber(documentType, documentNumber);
     }
 
@@ -33,17 +36,24 @@ public class CreditCardController {
     }
 
     /* Debit. All movement data must be passed, and internally makes the debit */
-    @PostMapping("/debit")
-    public void debit(@RequestBody CreditCardMovement creditCardMovement){
+    @PutMapping("/debit")
+    public void debit(@RequestBody CreditCardMovement creditCardMovement) throws CardException {
         cardService.debit(creditCardMovement);
     }
 
-    @PostMapping("/pay/{cardNumber}/{documentType}/{documentNumber}")
-    public void pay(@PathVariable String cardNumber, @PathVariable String documentType, @PathVariable String documentNumber){
-        /*POST(Pay card. Card number, docType and docNumber):
-            1) Api-wallet is consulted if it is available to pay
-            2) The money is debited from api-wallet
-            3) The available limit is returned
-            4) If it is not available, an error is thrown.*/
+    @PutMapping("/pay")
+    public void pay(@RequestBody @Valid PayCreditCardDto payCreditCardDto) throws CardException{
+        cardService.payCreditCard(payCreditCardDto);
     }
+
+    public record PayCreditCardDto(
+            @NotNull
+            String cardNumber,
+            @NotNull
+            String documentType,
+            @NotNull
+            String documentNumber
+    ) {
+    }
+
 }

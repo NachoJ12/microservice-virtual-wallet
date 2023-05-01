@@ -2,13 +2,15 @@ server:
   port: ${PORT:${SERVER_PORT:0}}
 
 spring:
-  mongodb:
-    embedded:
-      version: 4.0.2
-    data:
-      mongodb:
-        database: test
-        port: 27017
+  data:
+    mongodb:
+      #authentication-database: admin
+      username: usr-card-mongo
+      password: pwd-card-mongo
+      database: card-dev-mongo
+      host: localhost
+      port: 27017
+      #uri: mongodb://usr-card-mongo:pwd-card-mongo@localhost:27017/card-dev-mongo
 
 info:
   application:

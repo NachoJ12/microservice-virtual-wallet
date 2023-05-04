@@ -1,0 +1,14 @@
+version: '3.3'
+services:
+  card-mongo-container:
+    image: mongo
+    container_name: card-mongo-container
+    restart: on-failure
+    environment:
+      MONGO_INITDB_DATABASE: card-dev-mongo
+      MONGO_INITDB_ROOT_USERNAME: usr-card-mongo
+      MONGO_INITDB_ROOT_PASSWORD: pwd-card-mongo
+    ports:
+      - 27017:27017
+    expose:
+      - 27017

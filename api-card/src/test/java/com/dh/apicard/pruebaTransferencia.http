@@ -1,0 +1,7 @@
+POST http://localhost:8080/transferencia
+Content-Type: application/json
+
+
+### GET request with a header
+GET http://localhost:8080/transferencia
+Accept: application/json

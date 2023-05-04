@@ -27,3 +27,25 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      createCreditCard:
+        registerHealthIndicator: true #permite registrar el indicador de salud del circuit breaker
+        allowHealthIndicatorToFail: false
+        slidingWindowType: COUNT_BASED #analizar mediante cantidad de eventos
+        slidingWindowSize: 10 #cuantos eventos se esperan
+        failureRateThreshold: 40 #limite de fallas permitidas, 40%
+        permittedNumberOfCallsInHalfOpenState: 3 #cuantos intentos de peticiones se intentarán en estado semiabierto
+        automaticTransitionFromOpenToHalfOpenEnabled: true #transaccion automatica de semiabierto a abierto
+        waitDurationInOpenState: 15000 #cuanto tiempo se espera si se activa
+
+  retry:
+    instances:
+      retryCreateCreditCard:
+        maxAttempts: 3
+        waitDuration: 1000
+        retryExceptions: #especifica las excepciones que se deben reintentar
+          - feign.FeignException$InternalServerError
+          - feign.FeignException$ServiceUnavailable

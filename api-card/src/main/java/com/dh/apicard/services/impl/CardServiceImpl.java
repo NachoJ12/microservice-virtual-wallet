@@ -10,6 +10,10 @@ import com.dh.apicard.model.CreditCardMovement;
 import com.dh.apicard.repository.CreditCardMovementRepository;
 import com.dh.apicard.repository.CreditCardRepository;
 import com.dh.apicard.services.ICardService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -24,6 +28,8 @@ public class CardServiceImpl implements ICardService {
     private final IMarginsService iMarginsService;
     private final IWalletService iWalletService;
 
+    private final Logger logger = LoggerFactory.getLogger(CardServiceImpl.class);
+
     public CardServiceImpl(CreditCardRepository creditCardRepository, CreditCardMovementRepository creditCardMovementRepository, IMarginsService iMarginsService, IWalletService iWalletService) {
         this.creditCardRepository = creditCardRepository;
         this.creditCardMovementRepository = creditCardMovementRepository;
@@ -31,7 +37,19 @@ public class CardServiceImpl implements ICardService {
         this.iWalletService = iWalletService;
     }
 
+    // Generate a 16 digit random number for the card.
+    public static String generate16DigitRandomNumber() {
+        Random random = new Random();
+        String num = "";
+        for (int i = 0; i < 16; i++) {
+            num = num + random.nextInt(10);
+        }
+        return num;
+    }
+
     @Override
+    @Retry(name= "retryCreateCreditCard")
+    @CircuitBreaker(name = "createCreditCard", fallbackMethod = "createCreditCardFallback")
     public void createCreditCard(String docType, String docNumber, String currency) throws CardException {
         // It remains to verify that the client by docType and docNumber exists in order to create a card. (to do)
         var margins = iMarginsService.getMargins(docType, docNumber);
@@ -53,14 +71,26 @@ public class CardServiceImpl implements ICardService {
         );
     }
 
-    // Generate a 16 digit random number for the card.
-    public static String generate16DigitRandomNumber() {
-        Random random = new Random();
-        String num = "";
-        for (int i = 0; i < 16; i++) {
-            num = num + random.nextInt(10);
+    // As a fallback instead of throwing an exception, we'll save the request by providing card creation. When the api-margins does not work, we will momentarily give you margins of 0 so that they can be reviewed later
+    public void createCreditCardFallback(String docType, String docNumber, String currency, Exception ex) throws CardException {
+        logger.error("ERROR: " + ex);
+        // It remains to verify that the client by docType and docNumber exists in order to create a card. (to do)
+
+        if(creditCardRepository.findByDocumentTypeAndDocumentNumber(docType,docNumber).isPresent()){
+            throw new CardException(MessageError.CUSTOMER_WITH_CARD);
         }
-        return num;
+
+        creditCardRepository.save(
+                CreditCard.builder()
+                        .documentType(docType)
+                        .documentNumber(docNumber)
+                        .cardNumber(generate16DigitRandomNumber())
+                        .currency(currency)
+                        .qualifiedLimit(new BigDecimal(0))
+                        .consumedLimit(new BigDecimal(0))
+                        .availableLimit(new BigDecimal(0))
+                        .build()
+        );
     }
 
     @Override

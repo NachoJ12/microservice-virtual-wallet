@@ -2,6 +2,8 @@ server:
   port: ${PORT:${SERVER_PORT:0}}
 
 spring:
+  zipkin:
+    baseUrl: http://localhost:9411/
   data:
     mongodb:
       #authentication-database: admin

@@ -10,6 +10,17 @@ services:
     expose:
       - 9411
 
+  rabbitmq-container:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-container
+    hostname: localhost
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - 15672
+      - 5672
+
   card-mongo-container:
     image: mongo
     container_name: card-mongo-container

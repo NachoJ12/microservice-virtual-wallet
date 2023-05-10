@@ -2,6 +2,7 @@ package com.dh.g3.controller;
 
 
 import com.dh.g3.DTO.CustomerDTO;
+import com.dh.g3.event.CreatedCustomerEventProducer;
 import com.dh.g3.model.Customer;
 import com.dh.g3.service.impl.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,12 @@ public class CustomerController {
     @Autowired
     public CustomerServiceImpl customerService;
 
+    private final CreatedCustomerEventProducer createdCustomerEventProducer;
+
+    public CustomerController(CreatedCustomerEventProducer createdCustomerEventProducer) {
+        this.createdCustomerEventProducer = createdCustomerEventProducer;
+    }
+
     @GetMapping("/{doctype}/{docnum}")
     public Optional<Customer> getCustomer (@PathVariable String doctype, @PathVariable String docnum){
         return customerService.findByDocument(doctype, docnum);
@@ -26,6 +33,7 @@ public class CustomerController {
     @PostMapping("/save")
     public ResponseEntity<Object> saveCustomer (@RequestBody Customer customer){
         customerService.saveCustomer(customer);
+        createdCustomerEventProducer.publishCreatedCustomerEvent(new CreatedCustomerEventProducer.Data(customer.getDocumentType(), customer.getDocumentNumber()));
         return ResponseEntity.ok("Customer save");
     }
 
